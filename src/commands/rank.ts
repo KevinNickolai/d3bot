@@ -236,7 +236,7 @@ module.exports = {
                 return Rank.NoRank;
             })
             .then((ranking: Rank) => {
-                message.reply(`You are a(n) ${ranking}!`);
+                message.reply(`${playerName} is a(n) ${ranking}!`);
             })
             .catch((error) => {
                 console.log(error);
