@@ -4,14 +4,28 @@ export interface IRawData
 }
 
 interface PlayerInfo {
-
+    Username: string;
+    Country: string;
+    'Game mode': number;
+    'Cb-3': number;
+    F2p: number;
+    Banned: number;
+    Disqualified: number;
+    'Clan preference': Object;
+    'Last checked': string;
+    'Last checked unix': number;
 }
 
 interface PlayerStats
 { 
-    info: PlayerInfo
+    info: PlayerInfo;
     date: string;
     
+    Overall: number;
+    Overall_rank: number;
+    Overall_level: number;
+    Overall_ehp: number;
+
     Attack: number;
     Attack_rank : number;
     Attack_level : number;
