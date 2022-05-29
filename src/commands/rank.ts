@@ -18,8 +18,8 @@ enum Rank {
     NoRank = "No Rank"
 }
 
-const F2P_MAX_LEVEL = 0;
-const P2P_MAX_LEVEL = 0;
+const F2P_MAX_LEVEL = 1502;
+const P2P_MAX_LEVEL = 2090;
 
 module.exports = {
     name: 'rank',
@@ -39,34 +39,40 @@ module.exports = {
         tOsrs.Query(playerName!, TempleEndpointEnum.PlayerStats)
             .then((resultingJSON) => {
                 let pstats = (resultingJSON as IRawData);
-                let ehp = pstats.data.Overall_ehp;
+                let ehp = -1;
                 let totalLevel = pstats.data.Overall_level;
 
                 let cmb3: boolean = pstats.data.info["Cb-3"] === 1;
                 let f2p: boolean = pstats.data.info.F2p === 1;
-                let ironman: boolean = pstats.data.info["Game mode"] > 0
+                let ironman: boolean = pstats.data.info["Game mode"] > 0;
+                
+                // prayer only; Prayer > 1 and other combats all = 1
+                let prayerOnly: boolean = (pstats.data.prayer > 1) &&
+                                            (pstats.data.Attack == 1) &&
+                                            (pstats.data.defence == 1) &&
+                                            (pstats.data.strength == 1) &&
+                                            (pstats.data.ranged == 1) &&
+                                            (pstats.data.magic == 1);
 
-                if (ehp >= 2500) {
-                    return Rank.Marshal;
-                }
-                else if (ehp >= 2000) {
-                    return Rank.Commander;
-                }
-                else if (ehp >= 1500) {
-                    return Rank.Officer;
-                }
-                else if (false) { // max total level ?
-                    // captain
-                    //lieutenant
-                    //sergeant
-                    //corporal
-                    //pawn
-                    //recruit
-                }
-                else if (cmb3) {
+                if (cmb3) {
                     if (f2p) {
                         if (ironman) { // cmb3 f2p iron
-                            if (totalLevel >= 650 || ehp >= 600) {
+
+                            let ehp = Math.max(pstats.data.Im_ehp, pstats.data.Lvl3_ehp, pstats.data.F2p_ehp)
+
+                            if (ehp >= 2500) {
+                                return Rank.Marshal;
+                            }
+                            else if (ehp >= 2000) {
+                                return Rank.Commander;
+                            }
+                            else if (ehp >= 1500) {
+                                return Rank.Officer;
+                            }
+                            else if(totalLevel >= F2P_MAX_LEVEL){
+                                return Rank.General
+                            }
+                            else if (totalLevel >= 650 || ehp >= 600) {
                                 return Rank.Captain;
                             }
                             else if (totalLevel >= 550 || ehp >= 450) {
@@ -86,7 +92,22 @@ module.exports = {
                             }
                         }
                         else { // cmb3 f2p
-                            if (totalLevel >= 750 || ehp >= 650) {
+
+                            let ehp = Math.max(pstats.data.Lvl3_ehp, pstats.data.F2p_ehp)
+
+                            if (ehp >= 2500) {
+                                return Rank.Marshal;
+                            }
+                            else if (ehp >= 2000) {
+                                return Rank.Commander;
+                            }
+                            else if (ehp >= 1500) {
+                                return Rank.Officer;
+                            }
+                            else if(totalLevel >= F2P_MAX_LEVEL){
+                                return Rank.General
+                            }
+                            else if (totalLevel >= 750 || ehp >= 650) {
                                 return Rank.Captain;
                             }
                             else if (totalLevel >= 650 || ehp >= 500) {
@@ -107,7 +128,22 @@ module.exports = {
                         }
                     } else {
                         if (ironman) { // cmb3 p2p iron
-                            if (totalLevel >= 1300 || ehp >= 800) {
+
+                            let ehp = Math.max(pstats.data.Im_ehp, pstats.data.Lvl3_ehp);
+
+                            if (ehp >= 2500) {
+                                return Rank.Marshal;
+                            }
+                            else if (ehp >= 2000) {
+                                return Rank.Commander;
+                            }
+                            else if (ehp >= 1500) {
+                                return Rank.Officer;
+                            }
+                            else if(totalLevel >= P2P_MAX_LEVEL){
+                                return Rank.General
+                            }
+                            else if (totalLevel >= 1300 || ehp >= 800) {
                                 return Rank.Captain;
                             }
                             else if (totalLevel >= 1200 || ehp >= 600) {
@@ -127,7 +163,22 @@ module.exports = {
                             }
                         }
                         else {   // cmb3 p2p
-                            if (totalLevel >= 1400 || ehp >= 800) {
+
+                            let ehp = pstats.data.Lvl3_ehp;
+
+                            if (ehp >= 2500) {
+                                return Rank.Marshal;
+                            }
+                            else if (ehp >= 2000) {
+                                return Rank.Commander;
+                            }
+                            else if (ehp >= 1500) {
+                                return Rank.Officer;
+                            }
+                            else if(totalLevel >= P2P_MAX_LEVEL){
+                                return Rank.General
+                            }
+                            else if (totalLevel >= 1400 || ehp >= 800) {
                                 return Rank.Captain;
                             }
                             else if (totalLevel >= 1300 || ehp >= 600) {
@@ -151,7 +202,25 @@ module.exports = {
                 else {
                     if (f2p) {
                         if (ironman) { // 10hp f2p iron
-                            if (totalLevel >= 850 || ehp >= 650) {
+
+                            let ehp = Math.max(pstats.data.Im_ehp, pstats.data.F2p_ehp);
+
+                            if (ehp >= 2500) {
+                                return Rank.Marshal;
+                            }
+                            else if (ehp >= 2000) {
+                                return Rank.Commander;
+                            }
+                            else if (ehp >= 1500) {
+                                return Rank.Officer;
+                            }
+                            else if (prayerOnly && totalLevel - pstats.data.prayer_level >= F2P_MAX_LEVEL) { 
+                                return Rank.General;
+                            }
+                            else if(totalLevel >= F2P_MAX_LEVEL){
+                                return Rank.General
+                            }
+                            else if (totalLevel >= 850 || ehp >= 650) {
                                 return Rank.Captain;
                             }
                             else if (totalLevel >= 750 || ehp >= 500) {
@@ -171,7 +240,25 @@ module.exports = {
                             }
                         }
                         else {   // 10hp f2p
-                            if (totalLevel >= 850 || ehp >= 650) {
+
+                            let ehp = pstats.data.F2p_ehp;
+
+                            if (ehp >= 2500) {
+                                return Rank.Marshal;
+                            }
+                            else if (ehp >= 2000) {
+                                return Rank.Commander;
+                            }
+                            else if (ehp >= 1500) {
+                                return Rank.Officer;
+                            }
+                            else if (prayerOnly && totalLevel - pstats.data.prayer_level >= F2P_MAX_LEVEL) { 
+                                return Rank.General;
+                            }
+                            else if(totalLevel >= F2P_MAX_LEVEL){
+                                return Rank.General
+                            }
+                            else if (totalLevel >= 850 || ehp >= 650) {
                                 return Rank.Captain;
                             }
                             else if (totalLevel >= 750 || ehp >= 500) {
@@ -192,7 +279,25 @@ module.exports = {
                         }
                     } else {
                         if (ironman) { // 10hp p2p iron
-                            if (totalLevel >= 1550 || ehp >= 800) {
+
+                            let ehp = pstats.data.Im_ehp;
+
+                            if (ehp >= 2500) {
+                                return Rank.Marshal;
+                            }
+                            else if (ehp >= 2000) {
+                                return Rank.Commander;
+                            }
+                            else if (ehp >= 1500) {
+                                return Rank.Officer;
+                            }
+                            else if (prayerOnly && totalLevel - pstats.data.prayer_level >= P2P_MAX_LEVEL) { 
+                                return Rank.General;
+                            }
+                            else if(totalLevel >= P2P_MAX_LEVEL){
+                                return Rank.General
+                            }
+                            else if (totalLevel >= 1550 || ehp >= 800) {
                                 return Rank.Captain;
                             }
                             else if (totalLevel >= 1450 || ehp >= 600) {
@@ -212,7 +317,25 @@ module.exports = {
                             }
                         }
                         else {   // 10hp p2p
-                            if (totalLevel >= 1550 || ehp >= 800) {
+
+                            let ehp = pstats.data.Ehp;
+
+                            if (ehp >= 2500) {
+                                return Rank.Marshal;
+                            }
+                            else if (ehp >= 2000) {
+                                return Rank.Commander;
+                            }
+                            else if (ehp >= 1500) {
+                                return Rank.Officer;
+                            }
+                            else if (prayerOnly && totalLevel - pstats.data.prayer_level >= P2P_MAX_LEVEL) {
+                                return Rank.General;
+                            }
+                            else if(totalLevel >= P2P_MAX_LEVEL){
+                                return Rank.General
+                            }
+                            else if (totalLevel >= 1550 || ehp >= 800) {
                                 return Rank.Captain;
                             }
                             else if (totalLevel >= 1450 || ehp >= 600) {
