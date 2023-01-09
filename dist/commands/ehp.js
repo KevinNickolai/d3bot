@@ -25,9 +25,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const TempleOSRS_1 = __importStar(require("../classes/TempleOSRS"));
 module.exports = {
-    name: 'ehp',
+    name: "ehp",
     aliases: [],
-    description: "See effective hours played",
+    description: "See effective hours played: ",
     args: true,
     execute(message, args) {
         let tOsrs = new TempleOSRS_1.default();
@@ -35,15 +35,17 @@ module.exports = {
         while (args.length !== 0) {
             playerName += " " + args.shift();
         }
-        tOsrs.Query(playerName, TempleOSRS_1.TempleEndpointEnum.PlayerStats)
+        tOsrs
+            .Query(playerName, TempleOSRS_1.TempleEndpointEnum.PlayerStats)
             .then((resultingJSON) => {
             let pstats = resultingJSON;
             if (pstats.data) {
-                message.reply(`${playerName}:
-                Main EHP: ${pstats.data.Ehp}
-                IM EHP: ${pstats.data.Im_ehp}
-                Level 3 EHP: ${pstats.data.Lvl3_ehp}
-                F2P EHP: ${pstats.data.F2p_ehp}`);
+                message.reply(`${playerName}:` +
+                    `\n\t\tMain EHP: ${pstats.data.Ehp}` +
+                    `\n\t\t${pstats.data.Lvl3_ehp > 0 ? `Level 3 EHP: ${pstats.data.Lvl3_ehp}` : ""}`.trimEnd() +
+                    `\n\t\t${pstats.data.F2p_ehp > 0 ? `F2P EHP: ${pstats.data.F2p_ehp}` : ""}`.trimEnd() +
+                    `\n\t\t${pstats.data.Im_ehp > 0 ? `IM EHP: ${pstats.data.Im_ehp}` : ""}`.trimEnd() +
+                    `\n\t\t${pstats.data.Uim_ehp > 0 ? `UIM EHP ${pstats.data.Uim_ehp}` : ""}`.trimEnd());
             }
             else {
                 message.reply(`Could not find info in TempleOSRS database for player ${playerName}.`);
@@ -52,5 +54,5 @@ module.exports = {
             .catch((error) => {
             console.log(error);
         });
-    }
+    },
 };

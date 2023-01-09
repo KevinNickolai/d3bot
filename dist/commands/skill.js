@@ -24,6 +24,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const TempleOSRS_1 = __importStar(require("../classes/TempleOSRS"));
+const config_1 = require("../config");
 const SKILL_NAMES = ['Attack', 'Strength', 'Defence', 'Ranged',
     'Prayer', 'Magic', 'Runecraft', 'Construction',
     'Hitpoints', 'Agility', 'Herblore', 'Thieving',
@@ -34,6 +35,7 @@ module.exports = {
     name: 'skill',
     aliases: ['s'],
     description: "See a player's skill status",
+    usage: `${config_1.prefix}skill <skill name> <player name>`,
     args: true,
     execute(message, args) {
         let tOsrs = new TempleOSRS_1.default();

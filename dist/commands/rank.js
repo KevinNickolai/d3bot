@@ -38,8 +38,10 @@ var Rank;
     Rank["Recruit"] = "Recruit";
     Rank["NoRank"] = "No Rank";
 })(Rank || (Rank = {}));
-const F2P_MAX_LEVEL = 1502;
-const P2P_MAX_LEVEL = 2090;
+const F2P_CMB3_MAX_LEVEL = 808;
+const F2P_10HP_MAX_LEVEL = 906;
+const P2P_10HP_MAX_LEVEL = 2090;
+const P2P_CMB3_MAX_LEVEL = 1502;
 module.exports = {
     name: 'rank',
     aliases: ['r'],
@@ -56,16 +58,19 @@ module.exports = {
             let pstats = resultingJSON;
             let ehp = -1;
             let totalLevel = pstats.data.Overall_level;
+            if (pstats.data.Hitpoints_level > 10)
+                return undefined;
             let cmb3 = pstats.data.info["Cb-3"] === 1;
             let f2p = pstats.data.info.F2p === 1;
             let ironman = pstats.data.info["Game mode"] > 0;
             // prayer only; Prayer > 1 and other combats all = 1
-            let prayerOnly = (pstats.data.prayer > 1) &&
-                (pstats.data.Attack == 1) &&
-                (pstats.data.defence == 1) &&
-                (pstats.data.strength == 1) &&
-                (pstats.data.ranged == 1) &&
-                (pstats.data.magic == 1);
+            let prayerOnly = (pstats.data.Prayer_level > 1) &&
+                (pstats.data.Attack_level === 1) &&
+                (pstats.data.Defence_level === 1) &&
+                (pstats.data.Strength_level === 1) &&
+                (pstats.data.Ranged_level === 1) &&
+                (pstats.data.Magic_level === 1);
+            console.log(`cmb3:${cmb3}, f2p:${f2p}, ironman:${ironman}, prayerOnly:${prayerOnly}`);
             if (cmb3) {
                 if (f2p) {
                     if (ironman) { // cmb3 f2p iron
@@ -79,7 +84,7 @@ module.exports = {
                         else if (ehp >= 1500) {
                             return Rank.Officer;
                         }
-                        else if (totalLevel >= F2P_MAX_LEVEL) {
+                        else if (totalLevel >= F2P_CMB3_MAX_LEVEL) {
                             return Rank.General;
                         }
                         else if (totalLevel >= 650 || ehp >= 600) {
@@ -112,7 +117,7 @@ module.exports = {
                         else if (ehp >= 1500) {
                             return Rank.Officer;
                         }
-                        else if (totalLevel >= F2P_MAX_LEVEL) {
+                        else if (totalLevel >= F2P_CMB3_MAX_LEVEL) {
                             return Rank.General;
                         }
                         else if (totalLevel >= 750 || ehp >= 650) {
@@ -147,7 +152,7 @@ module.exports = {
                         else if (ehp >= 1500) {
                             return Rank.Officer;
                         }
-                        else if (totalLevel >= P2P_MAX_LEVEL) {
+                        else if (totalLevel >= P2P_CMB3_MAX_LEVEL) {
                             return Rank.General;
                         }
                         else if (totalLevel >= 1300 || ehp >= 800) {
@@ -180,7 +185,7 @@ module.exports = {
                         else if (ehp >= 1500) {
                             return Rank.Officer;
                         }
-                        else if (totalLevel >= P2P_MAX_LEVEL) {
+                        else if (totalLevel >= P2P_CMB3_MAX_LEVEL) {
                             return Rank.General;
                         }
                         else if (totalLevel >= 1400 || ehp >= 800) {
@@ -217,10 +222,10 @@ module.exports = {
                         else if (ehp >= 1500) {
                             return Rank.Officer;
                         }
-                        else if (prayerOnly && totalLevel - pstats.data.prayer_level >= F2P_MAX_LEVEL) {
+                        else if (prayerOnly && totalLevel - pstats.data.Prayer_level >= F2P_CMB3_MAX_LEVEL) {
                             return Rank.General;
                         }
-                        else if (totalLevel >= F2P_MAX_LEVEL) {
+                        else if (totalLevel >= F2P_10HP_MAX_LEVEL) {
                             return Rank.General;
                         }
                         else if (totalLevel >= 850 || ehp >= 650) {
@@ -253,10 +258,10 @@ module.exports = {
                         else if (ehp >= 1500) {
                             return Rank.Officer;
                         }
-                        else if (prayerOnly && totalLevel - pstats.data.prayer_level >= F2P_MAX_LEVEL) {
+                        else if (prayerOnly && totalLevel - pstats.data.Prayer_level >= F2P_CMB3_MAX_LEVEL) {
                             return Rank.General;
                         }
-                        else if (totalLevel >= F2P_MAX_LEVEL) {
+                        else if (totalLevel >= F2P_10HP_MAX_LEVEL) {
                             return Rank.General;
                         }
                         else if (totalLevel >= 850 || ehp >= 650) {
@@ -291,10 +296,10 @@ module.exports = {
                         else if (ehp >= 1500) {
                             return Rank.Officer;
                         }
-                        else if (prayerOnly && totalLevel - pstats.data.prayer_level >= P2P_MAX_LEVEL) {
+                        else if (prayerOnly && totalLevel - pstats.data.Prayer_level >= P2P_CMB3_MAX_LEVEL) {
                             return Rank.General;
                         }
-                        else if (totalLevel >= P2P_MAX_LEVEL) {
+                        else if (totalLevel >= P2P_10HP_MAX_LEVEL) {
                             return Rank.General;
                         }
                         else if (totalLevel >= 1550 || ehp >= 800) {
@@ -327,10 +332,10 @@ module.exports = {
                         else if (ehp >= 1500) {
                             return Rank.Officer;
                         }
-                        else if (prayerOnly && totalLevel - pstats.data.prayer_level >= P2P_MAX_LEVEL) {
+                        else if (prayerOnly && (totalLevel - pstats.data.Prayer_level) >= P2P_CMB3_MAX_LEVEL) {
                             return Rank.General;
                         }
-                        else if (totalLevel >= P2P_MAX_LEVEL) {
+                        else if (totalLevel >= P2P_10HP_MAX_LEVEL) {
                             return Rank.General;
                         }
                         else if (totalLevel >= 1550 || ehp >= 800) {
@@ -357,7 +362,17 @@ module.exports = {
             return Rank.NoRank;
         })
             .then((ranking) => {
-            message.reply(`${playerName} is a(n) ${ranking}!`);
+            switch (ranking) {
+                case undefined:
+                    message.reply(`${playerName} is unqualified to be a District 3 skiller!`);
+                    break;
+                case Rank.NoRank:
+                    message.reply(`${playerName} does not meet requirements!`);
+                    break;
+                default:
+                    message.reply(`${playerName} is a(n) ${ranking}!`);
+                    break;
+            }
         })
             .catch((error) => {
             console.log(error);

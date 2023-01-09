@@ -3,6 +3,7 @@ import CommandClient from "../classes/CommandClient";
 import TempleOSRS, { TempleEndpointEnum } from "../classes/TempleOSRS";
 import https from 'https';
 import { IRawData } from "../classes/IRawData";
+import { prefix } from "../config";
 
 const SKILL_NAMES = ['Attack', 'Strength', 'Defence', 'Ranged',
                      'Prayer', 'Magic', 'Runecraft', 'Construction',
@@ -15,6 +16,7 @@ module.exports = {
     name: 'skill',
     aliases: ['s'],
     description: "See a player's skill status",
+    usage: `${prefix}skill <skill name> <player name>`,
     args: true,
     execute(message: Discord.Message, args: string[]){
 
