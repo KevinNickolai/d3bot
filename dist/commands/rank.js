@@ -53,7 +53,7 @@ module.exports = {
         while (args.length !== 0) {
             playerName += " " + args.shift();
         }
-        tOsrs.Query(playerName, TempleOSRS_1.TempleEndpointEnum.PlayerStats)
+        tOsrs.QueryPlayerRSN(playerName, TempleOSRS_1.TemplePlayerEndpointEnum.PlayerStats)
             .then((resultingJSON) => {
             let pstats = resultingJSON;
             let ehp = -1;

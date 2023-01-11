@@ -36,7 +36,7 @@ module.exports = {
             playerName += " " + args.shift();
         }
         tOsrs
-            .Query(playerName, TempleOSRS_1.TempleEndpointEnum.PlayerStats)
+            .QueryPlayerRSN(playerName, TempleOSRS_1.TemplePlayerEndpointEnum.PlayerStats)
             .then((resultingJSON) => {
             let pstats = resultingJSON;
             if (pstats.data) {

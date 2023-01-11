@@ -1,6 +1,6 @@
 import * as Discord from "discord.js";
 import CommandClient from "../classes/CommandClient";
-import TempleOSRS, { TempleEndpointEnum } from "../classes/TempleOSRS";
+import TempleOSRS, { TemplePlayerEndpointEnum } from "../classes/TempleOSRS";
 import https from 'https';
 import { IRawData } from "../classes/IRawData";
 
@@ -39,7 +39,7 @@ module.exports = {
             playerName += " " + args.shift();
         }
 
-        tOsrs.Query(playerName!, TempleEndpointEnum.PlayerStats)
+        tOsrs.QueryPlayerRSN(playerName!, TemplePlayerEndpointEnum.PlayerStats)
             .then((resultingJSON) => {
                 let pstats = (resultingJSON as IRawData);
                 let ehp = -1;
