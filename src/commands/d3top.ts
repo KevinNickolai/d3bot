@@ -36,7 +36,7 @@ module.exports = {
                                 discordUsersFound.push(Promise.resolve(new Discord.Collection((new Map<string, Discord.GuildMember>()).set(cachedPlayer.nickname!, cachedPlayer))));
                             }
                             else{
-                                discordUsersFound.push(message.guild?.members.search({query: result.Day[i].player}));
+                                discordUsersFound.push(message.guild?.members.search({query: result.Day[i].player, cache: true, limit: 1}));
                             }
                         }
 
@@ -84,7 +84,7 @@ module.exports = {
                             discordUsersFound.push(Promise.resolve(new Discord.Collection((new Map<string, Discord.GuildMember>()).set(cachedPlayer.nickname!, cachedPlayer))));
                         }
                         else{
-                            discordUsersFound.push(message.guild?.members.search({query: result.Week[i].player}));
+                            discordUsersFound.push(message.guild?.members.search({query: result.Week[i].player, cache: true, limit: 1}));
                         }
                     }
 
@@ -133,7 +133,7 @@ module.exports = {
                             discordUsersFound.push(Promise.resolve(new Discord.Collection((new Map<string, Discord.GuildMember>()).set(cachedPlayer.nickname!, cachedPlayer))));
                         }
                         else{
-                            discordUsersFound.push(message.guild?.members.search({query: result.Month[i].player}));
+                            discordUsersFound.push(message.guild?.members.search({query: result.Month[i].player, cache: true, limit: 1}));
                         }
                     }
 
