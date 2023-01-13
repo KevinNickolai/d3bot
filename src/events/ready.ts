@@ -1,3 +1,4 @@
+import { DISTRICT3_TEMPLE_GROUPID } from "../config";
 import CommandClient from "../classes/CommandClient";
 import { IRawPlayerInfo } from "../classes/IRawData";
 import TempleOSRS, { TemplePlayerEndpointEnum, TempleGroupEndpointEnum } from "../classes/TempleOSRS";
@@ -9,13 +10,12 @@ module.exports = (client: CommandClient) => {
 
     console.log(`Starting game across ${client.guilds.cache.size} servers.`);
 
-    const D3GroupID = 226;
     let tOsrs = new TempleOSRS();
 
     console.log(`Starting datapoint refresh service for District 3...`);
 
     setInterval(() => {
-        tOsrs.QueryGroupMembers(D3GroupID, TempleGroupEndpointEnum.GroupMembers)
+        tOsrs.QueryGroupMembers(DISTRICT3_TEMPLE_GROUPID, TempleGroupEndpointEnum.GroupMembers)
             .then((groupMembers) => {
 
                 let rsns : string[] = Object.values(groupMembers);
@@ -53,13 +53,13 @@ module.exports = (client: CommandClient) => {
                                 }
                                 })
                                 .catch((error) => {
-                                console.log(`Error processing user ${rsn} : ${error}`);
+                                    console.log(`Error processing user ${rsn} : ${error}`);
                                 })
                     }, rateLimitInterval * (i + 1));
                 }
             })
             .catch((error) => {
-                console.log(`Error processing groupID ${D3GroupID} : ${error}`);
+                console.log(`Error processing groupID ${DISTRICT3_TEMPLE_GROUPID} : ${error}`);
             });
     }, 1000 * 60 * 60 * 24 * 3)
 }

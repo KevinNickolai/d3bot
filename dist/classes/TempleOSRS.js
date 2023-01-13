@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TempleGroupEndpointEnum = exports.TemplePlayerEndpointEnum = exports.BaseEndpointEnum = void 0;
+exports.TempleGroupEndpointEnum = exports.TemplePlayerEndpointEnum = exports.TempleCompetitiveCommunityEndpointEnum = exports.BaseEndpointEnum = void 0;
 const https_1 = __importDefault(require("https"));
 class BaseEndpointEnum {
     constructor(path) {
@@ -11,6 +11,12 @@ class BaseEndpointEnum {
     }
 }
 exports.BaseEndpointEnum = BaseEndpointEnum;
+class TempleCompetitiveCommunityEndpointEnum extends BaseEndpointEnum {
+}
+exports.TempleCompetitiveCommunityEndpointEnum = TempleCompetitiveCommunityEndpointEnum;
+TempleCompetitiveCommunityEndpointEnum.CurrentTopDay = new TempleCompetitiveCommunityEndpointEnum("current_top/day");
+TempleCompetitiveCommunityEndpointEnum.CurrentTopWeek = new TempleCompetitiveCommunityEndpointEnum("current_top/week");
+TempleCompetitiveCommunityEndpointEnum.CurrentTopMonth = new TempleCompetitiveCommunityEndpointEnum("current_top/month");
 class TemplePlayerEndpointEnum extends BaseEndpointEnum {
 }
 exports.TemplePlayerEndpointEnum = TemplePlayerEndpointEnum;
@@ -32,6 +38,36 @@ class TempleOSRS {
                 'Accept': 'application/json'
             }
         };
+    }
+    QueryCurrentTop(endpoint, groupID, skill = "ehp") {
+        return new Promise((resolve, reject) => {
+            let queryString = `?skill=${skill}`;
+            if (typeof groupID !== 'undefined') {
+                queryString += `&group=${groupID}`;
+            }
+            let options = {
+                hostname: "templeosrs.com",
+                port: 443,
+                path: `/api/${endpoint.path}.php${queryString}`,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            };
+            let req = https_1.default.get(options, res => {
+                let rawData = '';
+                res.on('data', d => { rawData += d; });
+                res.on('end', () => {
+                    try {
+                        const parsedData = JSON.parse(rawData);
+                        console.log(parsedData);
+                        resolve(JSON.parse(rawData));
+                    }
+                    catch (e) {
+                        console.log(`Error: ${e.message}`);
+                    }
+                });
+            });
+        });
     }
     QueryGroupMembers(groupID, endpoint) {
         return new Promise((resolve, reject) => {

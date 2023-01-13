@@ -10,8 +10,13 @@ export class BaseEndpointEnum {
 
 }
 
-export class TemplePlayerEndpointEnum extends BaseEndpointEnum {
+export class TempleCompetitiveCommunityEndpointEnum extends BaseEndpointEnum {
+    static CurrentTopDay = new TempleCompetitiveCommunityEndpointEnum("current_top/day");
+    static CurrentTopWeek = new TempleCompetitiveCommunityEndpointEnum("current_top/week");
+    static CurrentTopMonth = new TempleCompetitiveCommunityEndpointEnum("current_top/month");
+}
 
+export class TemplePlayerEndpointEnum extends BaseEndpointEnum {
     static PlayerInfo = new TemplePlayerEndpointEnum("player_info");
     static PlayerNames = new TemplePlayerEndpointEnum("player_names");
     static PlayerStats = new TemplePlayerEndpointEnum("player_stats");
@@ -35,6 +40,43 @@ export default class TempleOSRS {
                 'Accept': 'application/json'
             }
         }
+    }
+
+    QueryCurrentTop(endpoint : TempleCompetitiveCommunityEndpointEnum, groupID? : number, skill : string = "ehp" ) : Promise<Object> {
+        return new Promise((resolve, reject) => {
+
+            let queryString : string = `?skill=${skill}`;
+
+            if(typeof groupID !== 'undefined'){
+                queryString += `&group=${groupID}`;
+            }
+
+            let options = {
+                hostname: "templeosrs.com",
+                port: 443,
+                path: `/api/${endpoint.path}.php${queryString}`,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            };
+
+            let req = https.get(options, res => {
+                let rawData = '';
+
+                res.on('data', d => { rawData += d; });
+
+                res.on('end', () => {
+                    try {
+                        const parsedData = JSON.parse(rawData);
+                        console.log(parsedData);
+                        resolve(JSON.parse(rawData));
+                    }
+                    catch (e: any){
+                        console.log(`Error: ${e.message}`);
+                    }
+                });
+            });
+        });
     }
 
     QueryGroupMembers(groupID : number, endpoint : TempleGroupEndpointEnum) : Promise<Object>{

@@ -25,12 +25,6 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const TempleOSRS_1 = __importStar(require("../classes/TempleOSRS"));
 const config_1 = require("../config");
-const SKILL_NAMES = ['Attack', 'Strength', 'Defence', 'Ranged',
-    'Prayer', 'Magic', 'Runecraft', 'Construction',
-    'Hitpoints', 'Agility', 'Herblore', 'Thieving',
-    'Crafting', 'Fletching', 'Slayer', 'Hunter',
-    'Mining', 'Smithing', 'Fishing', 'Cooking',
-    'Firemaking', 'Woodcutting', 'Farming'];
 module.exports = {
     name: 'skill',
     aliases: ['s'],
@@ -41,7 +35,7 @@ module.exports = {
         let tOsrs = new TempleOSRS_1.default();
         let typedSkill = args.shift();
         let skillName = typedSkill?.charAt(0).toUpperCase() + typedSkill?.slice(1).toLowerCase();
-        let indexOf = SKILL_NAMES.indexOf(skillName);
+        let indexOf = config_1.SKILL_NAMES.indexOf(skillName);
         if (indexOf !== -1) {
             let playerName = args.shift() ?? message.author.username;
             while (args.length !== 0) {
@@ -50,10 +44,10 @@ module.exports = {
             tOsrs.QueryPlayerRSN(playerName, TempleOSRS_1.TemplePlayerEndpointEnum.PlayerStats)
                 .then((resultingJSON) => {
                 let pstats = resultingJSON;
-                const skill = (SKILL_NAMES[indexOf]);
-                const skillRank = (SKILL_NAMES[indexOf] + "_rank");
-                const skillLevel = (SKILL_NAMES[indexOf] + "_level");
-                const skillEhp = (SKILL_NAMES[indexOf] + "_ehp");
+                const skill = (config_1.SKILL_NAMES[indexOf]);
+                const skillRank = (config_1.SKILL_NAMES[indexOf] + "_rank");
+                const skillLevel = (config_1.SKILL_NAMES[indexOf] + "_level");
+                const skillEhp = (config_1.SKILL_NAMES[indexOf] + "_ehp");
                 console.log(pstats.data);
                 message.reply(`${playerName} | ${skill}:
                 Experience: ${pstats.data[skill]}

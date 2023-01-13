@@ -6,7 +6,7 @@ module.exports = (client, message) => {
         return;
     const args = message.content.slice(prefix.length).split(/ +/);
     const commandName = args.shift().toLowerCase();
-    const command = client.commands.get(commandName);
+    const command = client.commands.get(commandName) || Array.from(client.commands.values()).find((cmd) => cmd.aliases.includes(commandName));
     if (!command) {
         return message.reply(`Command ${commandName} does not exist.`);
     }

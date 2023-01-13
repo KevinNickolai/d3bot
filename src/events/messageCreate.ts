@@ -9,7 +9,7 @@ module.exports = (client: CommandClient, message: Discord.Message) => {
     const args = message.content.slice(prefix.length).split(/ +/);
     const commandName = args.shift()!.toLowerCase();
 
-    const command = client.commands.get(commandName);
+    const command = client.commands.get(commandName) || Array.from<any>(client.commands.values()).find((cmd: any) => cmd.aliases.includes(commandName));
 
     if(!command){
         return message.reply(`Command ${commandName} does not exist.`);

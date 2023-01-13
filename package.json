@@ -8,6 +8,7 @@
     "tsc": "tsc",
     "start": "ts-node ./src/index.ts",
     "start2": "node ./dist/index.js",
+    "testStart": "node ./dist/tests/tindex.js",
     "build": "tsc --build",
     "clean": "tsc --build --clean",
     "dev": "nodemon ./dist/index.js"

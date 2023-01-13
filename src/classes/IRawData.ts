@@ -1,3 +1,14 @@
+export type IBaseTopTimeframe = {
+    [Timeframe in "Day" | "Week" | "Month"]: List;
+} & {
+    info: ITopTimeframeInfo;
+};
+
+
+interface List{
+    [i: string]: ITopTimeframePlayer;
+}
+
 export interface IRawData
 {
     data: PlayerStats;
@@ -5,6 +16,25 @@ export interface IRawData
 
 export interface IRawPlayerInfo{
     data: PlayerInfo;
+}
+
+interface ITopTimeframePlayer{
+    player: string;
+    nickname: string;
+    xp: string;
+    rank: number;
+    country: string;
+    icon_url: Object;
+    icon_desc: Object;
+    game_mode: number;
+}
+
+interface ITopTimeframeInfo{
+    skill : string;
+    skill_number : string;
+    duration: "Day" | "Week" | "Month";
+    start_date: number;
+    end_date: number;
 }
 
 interface PlayerInfo {

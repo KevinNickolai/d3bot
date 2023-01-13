@@ -3,14 +3,9 @@ import CommandClient from "../classes/CommandClient";
 import TempleOSRS, { TemplePlayerEndpointEnum } from "../classes/TempleOSRS";
 import https from 'https';
 import { IRawData } from "../classes/IRawData";
-import { prefix } from "../config";
+import { prefix, SKILL_NAMES } from "../config";
 
-const SKILL_NAMES = ['Attack', 'Strength', 'Defence', 'Ranged',
-                     'Prayer', 'Magic', 'Runecraft', 'Construction',
-                     'Hitpoints', 'Agility', 'Herblore', 'Thieving',
-                     'Crafting', 'Fletching', 'Slayer', 'Hunter',
-                     'Mining', 'Smithing', 'Fishing', 'Cooking',
-                     'Firemaking', 'Woodcutting', 'Farming'];
+
 
 module.exports = {
     name: 'skill',
