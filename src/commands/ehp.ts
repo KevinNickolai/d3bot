@@ -8,6 +8,7 @@ module.exports = {
   name: "ehp",
   aliases: [],
   description: "See effective hours played: ",
+  usage: `<player name>`,
   args: true,
   execute(message: Discord.Message, args: string[]) {
     let tOsrs = new TempleOSRS();

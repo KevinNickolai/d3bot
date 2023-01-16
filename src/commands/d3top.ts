@@ -10,7 +10,7 @@ module.exports = {
     name: 'd3top',
     aliases: ['d3t'],
     description: "See top District 3 players over the past Month, Week, or Day",
-    usage: `${prefix}d3top <(d)ay | (w)eek | (m)onth> <-u>`,
+    usage: `<(d)ay | (w)eek | (m)onth> <-u>`,
     args: true,
     execute(message: Discord.Message, args: string[]){
 

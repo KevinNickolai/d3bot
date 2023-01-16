@@ -30,7 +30,7 @@ module.exports = {
     name: 'd3record',
     aliases: ['d3r', 'record', 'records', 'r'],
     description: "See top District 3 records for 6h, Day, Week, Month, and Year",
-    usage: `${config_1.prefix}d3record <(6)h | (d)ay | (w)eek | (m)onth | (y)ear> <-u>`,
+    usage: `<(6)h | (d)ay | (w)eek | (m)onth | (y)ear> <-u>`,
     args: true,
     execute(message, args) {
         let tOsrs = new TempleOSRS_1.default();

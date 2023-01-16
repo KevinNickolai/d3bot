@@ -30,7 +30,7 @@ module.exports = {
     name: 'd3top',
     aliases: ['d3t'],
     description: "See top District 3 players over the past Month, Week, or Day",
-    usage: `${config_1.prefix}d3top <(d)ay | (w)eek | (m)onth> <-u>`,
+    usage: `<(d)ay | (w)eek | (m)onth> <-u>`,
     args: true,
     execute(message, args) {
         let tOsrs = new TempleOSRS_1.default();

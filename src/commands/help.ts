@@ -34,10 +34,10 @@ module.exports = {
         else{
             const name: string = args[0].toLowerCase();
 
-            const command = commands.get(name);
+            const command = commands.get(name) || Array.from<any>(commands.values()).find((cmd: any) => cmd.aliases.includes(name));
 
             if(!command) {
-                return message.reply(`'${name} is not a valid command.`);
+                return message.reply(`'${name}' is not a valid command.`);
             }
 
             data.push(`**Name:** ${command.name}`);

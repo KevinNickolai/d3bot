@@ -28,6 +28,7 @@ module.exports = {
     name: "ehp",
     aliases: [],
     description: "See effective hours played: ",
+    usage: `<player name>`,
     args: true,
     execute(message, args) {
         let tOsrs = new TempleOSRS_1.default();

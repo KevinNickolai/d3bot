@@ -29,7 +29,7 @@ module.exports = {
     name: 'skill',
     aliases: ['s'],
     description: "See a player's skill status",
-    usage: `${config_1.prefix}skill <skill name> <player name>`,
+    usage: `<skill name> <player name>`,
     args: true,
     execute(message, args) {
         let tOsrs = new TempleOSRS_1.default();

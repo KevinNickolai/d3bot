@@ -11,7 +11,7 @@ module.exports = {
     name: 'skill',
     aliases: ['s'],
     description: "See a player's skill status",
-    usage: `${prefix}skill <skill name> <player name>`,
+    usage: `<skill name> <player name>`,
     args: true,
     execute(message: Discord.Message, args: string[]){
 
