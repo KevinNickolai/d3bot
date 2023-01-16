@@ -30,13 +30,13 @@ module.exports = {
                         let discordUsersFound = [];
 
                         for(let i = 1; typeof result.Day[i] !== 'undefined' && i <= 10; ++i){
-                            let cachedPlayer = message.guild?.members.cache.find(user => user.nickname === result.Day[i].player);
+                            let cachedPlayer = message.guild?.members.cache.find(user => user.displayName === result.Day[i].player);
 
                             if(cachedPlayer){
-                                discordUsersFound.push(Promise.resolve(new Discord.Collection((new Map<string, Discord.GuildMember>()).set(cachedPlayer.nickname!, cachedPlayer))));
+                                discordUsersFound.push(Promise.resolve(new Discord.Collection((new Map<string, Discord.GuildMember>()).set(cachedPlayer.displayName!, cachedPlayer))));
                             }
                             else{
-                                discordUsersFound.push(message.guild?.members.search({query: result.Day[i].player, cache: true, limit: 1}));
+                                discordUsersFound.push(message.guild?.members.search({query: result.Day[i].player, cache: true, limit: 5}));
                             }
                         }
 
@@ -49,7 +49,7 @@ module.exports = {
 
                             const padLimit = mentionsOn ? 13 : 12;
 
-                            if(mentionsOn) player = (await discordUsersFound[i-1])?.find(user => user.nickname === result.Day[i].player);
+                            if(mentionsOn) player = (await discordUsersFound[i-1])?.find(user => user.displayName === result.Day[i].player);
                             formattedResponse += `${result.Day[i].rank.toString().padStart(2)} ` +
                                                  `(${result.Day[i].xp.slice(0, 5)}): ` +
                                                  `${ player ? `<@${player.id}>` : result.Day[i].player.padEnd(padLimit)}\t`;
@@ -78,13 +78,13 @@ module.exports = {
                     let discordUsersFound = [];
 
                     for(let i = 1; typeof result.Week[i] !== 'undefined' && i <= 10; ++i){
-                        let cachedPlayer = message.guild?.members.cache.find(user => user.nickname === result.Week[i].player);
+                        let cachedPlayer = message.guild?.members.cache.find(user => user.displayName === result.Week[i].player);
 
                         if(cachedPlayer){
-                            discordUsersFound.push(Promise.resolve(new Discord.Collection((new Map<string, Discord.GuildMember>()).set(cachedPlayer.nickname!, cachedPlayer))));
+                            discordUsersFound.push(Promise.resolve(new Discord.Collection((new Map<string, Discord.GuildMember>()).set(cachedPlayer.displayName!, cachedPlayer))));
                         }
                         else{
-                            discordUsersFound.push(message.guild?.members.search({query: result.Week[i].player, cache: true, limit: 1}));
+                            discordUsersFound.push(message.guild?.members.search({query: result.Week[i].player, cache: true, limit: 5}));
                         }
                     }
 
@@ -97,7 +97,7 @@ module.exports = {
 
                         const padLimit = mentionsOn ? 13 : 12;
 
-                        if(mentionsOn) player = (await discordUsersFound[i-1])?.find(user => user.nickname === result.Week[i].player);
+                        if(mentionsOn) player = (await discordUsersFound[i-1])?.find(user => user.displayName === result.Week[i].player);
                         formattedResponse += `${result.Week[i].rank.toString().padStart(2)} ` +
                                              `(${result.Week[i].xp.slice(0, 5)}): ` +
                                              `${ player ? `<@${player.id}>` : result.Week[i].player.padEnd(padLimit)}\t`;
@@ -127,13 +127,13 @@ module.exports = {
                     let discordUsersFound = [];
 
                     for(let i = 1; typeof result.Month[i] !== 'undefined' && i <= 10; ++i){
-                        let cachedPlayer = message.guild?.members.cache.find(user => user.nickname === result.Month[i].player);
+                        let cachedPlayer = message.guild?.members.cache.find(user => user.displayName === result.Month[i].player);
 
                         if(cachedPlayer){
-                            discordUsersFound.push(Promise.resolve(new Discord.Collection((new Map<string, Discord.GuildMember>()).set(cachedPlayer.nickname!, cachedPlayer))));
+                            discordUsersFound.push(Promise.resolve(new Discord.Collection((new Map<string, Discord.GuildMember>()).set(cachedPlayer.displayName!, cachedPlayer))));
                         }
                         else{
-                            discordUsersFound.push(message.guild?.members.search({query: result.Month[i].player, cache: true, limit: 1}));
+                            discordUsersFound.push(message.guild?.members.search({query: result.Month[i].player, cache: true, limit: 5}));
                         }
                     }
 
@@ -146,7 +146,7 @@ module.exports = {
 
                         const padLimit = mentionsOn ? 13 : 12;
 
-                        if(mentionsOn) player = (await discordUsersFound[i-1])?.find(user => user.nickname === result.Month[i].player);
+                        if(mentionsOn) player = (await discordUsersFound[i-1])?.find(user => user.displayName === result.Month[i].player);
                         formattedResponse += `${result.Month[i].rank.toString().padStart(2)} ` +
                                              `(${result.Month[i].xp.slice(0, 5)}): ` +
                                              `${ player ? `<@${player.id}>` : result.Month[i].player.padEnd(padLimit)}\t`;

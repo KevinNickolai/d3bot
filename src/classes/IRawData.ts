@@ -1,12 +1,23 @@
 export type IBaseTopTimeframe = {
-    [Timeframe in "Day" | "Week" | "Month"]: List;
+    [Timeframe in "Day" | "Week" | "Month"]: TopTimeframeList;
 } & {
     info: ITopTimeframeInfo;
 };
 
+export interface IRecordTopTimeframe{
+    Day: TopTimeframeRecordList;
+    Week: TopTimeframeRecordList;
+    Month: TopTimeframeRecordList;
+    "6h": TopTimeframeRecordList;
+    Year: TopTimeframeRecordList;
+}
 
-interface List{
+interface TopTimeframeList{
     [i: string]: ITopTimeframePlayer;
+}
+
+interface TopTimeframeRecordList{
+    [i: string]: ITopTimeframeRecordPlayer;
 }
 
 export interface IRawData
@@ -16,6 +27,11 @@ export interface IRawData
 
 export interface IRawPlayerInfo{
     data: PlayerInfo;
+}
+
+interface ITopTimeframeRecordPlayer extends ITopTimeframePlayer{
+    video_url: Object;
+    date: string;
 }
 
 interface ITopTimeframePlayer{

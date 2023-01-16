@@ -14,6 +14,8 @@ export class TempleCompetitiveCommunityEndpointEnum extends BaseEndpointEnum {
     static CurrentTopDay = new TempleCompetitiveCommunityEndpointEnum("current_top/day");
     static CurrentTopWeek = new TempleCompetitiveCommunityEndpointEnum("current_top/week");
     static CurrentTopMonth = new TempleCompetitiveCommunityEndpointEnum("current_top/month");
+
+    static TopRecords = new TempleCompetitiveCommunityEndpointEnum("records");
 }
 
 export class TemplePlayerEndpointEnum extends BaseEndpointEnum {

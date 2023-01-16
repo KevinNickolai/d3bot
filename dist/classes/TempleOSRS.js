@@ -17,6 +17,7 @@ exports.TempleCompetitiveCommunityEndpointEnum = TempleCompetitiveCommunityEndpo
 TempleCompetitiveCommunityEndpointEnum.CurrentTopDay = new TempleCompetitiveCommunityEndpointEnum("current_top/day");
 TempleCompetitiveCommunityEndpointEnum.CurrentTopWeek = new TempleCompetitiveCommunityEndpointEnum("current_top/week");
 TempleCompetitiveCommunityEndpointEnum.CurrentTopMonth = new TempleCompetitiveCommunityEndpointEnum("current_top/month");
+TempleCompetitiveCommunityEndpointEnum.TopRecords = new TempleCompetitiveCommunityEndpointEnum("records");
 class TemplePlayerEndpointEnum extends BaseEndpointEnum {
 }
 exports.TemplePlayerEndpointEnum = TemplePlayerEndpointEnum;
