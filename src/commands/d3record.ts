@@ -71,7 +71,7 @@ module.exports = {
                                 discordUsersSearch.push(Promise.resolve(new Discord.Collection((new Map<string, Discord.GuildMember>()).set(cachedPlayer.displayName!, cachedPlayer))));
                             }
                             else{
-                                discordUsersSearch.push(message.guild?.members.search({query: playerList[i].player, cache: true, limit: 1})??Promise.resolve(new Discord.Collection<string, Discord.GuildMember>()));
+                                discordUsersSearch.push(message.guild?.members.search({query: playerList[i].player, cache: true, limit: 5})??Promise.resolve(new Discord.Collection<string, Discord.GuildMember>()));
                             }
                         }
 
@@ -86,7 +86,7 @@ module.exports = {
 
                         let date = playerList[i].date.split(" ")[0];
 
-                        formattedResponse += `${playerList[i].rank.toString().padStart(2)}` +
+                        formattedResponse += `${playerList[i].rank.toString().padStart(2)} ` +
                                              `(${playerList[i].xp.slice(0,sliceCount)}): ` +
                                              `${player ? `<@${player.id}>` : (playerList[i].player)} on ${date}`.padEnd(26) + "\t";
                         if(mentionsOn || i % 3 === 0){

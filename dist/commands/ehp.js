@@ -27,12 +27,12 @@ const TempleOSRS_1 = __importStar(require("../classes/TempleOSRS"));
 module.exports = {
     name: "ehp",
     aliases: [],
-    description: "See effective hours played: ",
+    description: "See effective hours played.",
     usage: `<player name>`,
-    args: true,
+    args: false,
     execute(message, args) {
         let tOsrs = new TempleOSRS_1.default();
-        let playerName = args.shift();
+        let playerName = args.shift() ?? (message.inGuild() ? message.member?.displayName : message.author.username);
         while (args.length !== 0) {
             playerName += " " + args.shift();
         }

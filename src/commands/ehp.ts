@@ -7,13 +7,13 @@ import { IRawData } from "../classes/IRawData";
 module.exports = {
   name: "ehp",
   aliases: [],
-  description: "See effective hours played: ",
+  description: "See effective hours played.",
   usage: `<player name>`,
-  args: true,
+  args: false,
   execute(message: Discord.Message, args: string[]) {
     let tOsrs = new TempleOSRS();
 
-    let playerName = args.shift();
+    let playerName = args.shift()??(message.inGuild() ? message.member?.displayName : message.author.username);
 
     while (args.length !== 0) {
       playerName += " " + args.shift();
@@ -34,9 +34,7 @@ module.exports = {
 `\n\t\t${pstats.data.Uim_ehp > 0 ? `UIM EHP ${pstats.data.Uim_ehp}` : "" }`.trimEnd()
           );
         } else {
-          message.reply(
-            `Could not find info in TempleOSRS database for player ${playerName}.`
-          );
+          message.reply(`Could not find info in TempleOSRS database for player ${playerName}.`);
         }
       })
       .catch((error) => {

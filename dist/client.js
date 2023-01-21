@@ -33,7 +33,9 @@ const util_1 = require("util");
 const readdirAsync = (0, util_1.promisify)(fs_1.default.readdir);
 const client = new CommandClient_1.default({ intents: [Discord.Intents.FLAGS.GUILDS,
         Discord.Intents.FLAGS.GUILD_MESSAGES,
-        Discord.Intents.FLAGS.DIRECT_MESSAGES] });
+        Discord.Intents.FLAGS.DIRECT_MESSAGES],
+    partials: ["CHANNEL"] /// Required for DMs
+});
 /*
 * Read in commands into the CommandClient
 */

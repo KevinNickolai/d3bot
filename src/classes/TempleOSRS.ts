@@ -1,38 +1,27 @@
 import https from 'https';
 
-export class BaseEndpointEnum {
-
-    public path : string;
-
-    constructor(path : string){
-        this.path = path;
-    }
-
+export enum TempleCompetitiveCommunityEndpointEnum{
+    CurrentTopDay = "current_top/day",
+    CurrentTopWeek = "current_top/week",
+    CurrentTopMonth = "current_top/month",
+    TopRecords = "records"
 }
 
-export class TempleCompetitiveCommunityEndpointEnum extends BaseEndpointEnum {
-    static CurrentTopDay = new TempleCompetitiveCommunityEndpointEnum("current_top/day");
-    static CurrentTopWeek = new TempleCompetitiveCommunityEndpointEnum("current_top/week");
-    static CurrentTopMonth = new TempleCompetitiveCommunityEndpointEnum("current_top/month");
-
-    static TopRecords = new TempleCompetitiveCommunityEndpointEnum("records");
+export enum TemplePlayerEndpointEnum {
+    PlayerInfo = "player_info",
+    PlayerNames = "player_names",
+    PlayerStats = "player_stats",
+    PlayerGains = "player_gains",
+    PlayerDatapoints = "player_datapoints"
 }
 
-export class TemplePlayerEndpointEnum extends BaseEndpointEnum {
-    static PlayerInfo = new TemplePlayerEndpointEnum("player_info");
-    static PlayerNames = new TemplePlayerEndpointEnum("player_names");
-    static PlayerStats = new TemplePlayerEndpointEnum("player_stats");
-    static PlayerGains = new TemplePlayerEndpointEnum("player_gains");
-    static PlayerDatapoints = new TemplePlayerEndpointEnum("player_datapoints");
-}
-
-export class TempleGroupEndpointEnum extends BaseEndpointEnum {
-    static GroupMembers = new TempleGroupEndpointEnum("groupmembers")
+export enum TempleGroupEndpointEnum{
+    GroupMembers = "groupmembers"
 }
 
 export default class TempleOSRS {
 
-    private defaultHttpOptions: Object;
+    private defaultHttpOptions: https.RequestOptions;
 
     constructor() {
         this.defaultHttpOptions = {
@@ -44,29 +33,13 @@ export default class TempleOSRS {
         }
     }
 
-    QueryCurrentTop(endpoint : TempleCompetitiveCommunityEndpointEnum, groupID? : number, skill : string = "ehp" ) : Promise<Object> {
+    private async GetRequest(options: https.RequestOptions) : Promise<Object> {
         return new Promise((resolve, reject) => {
-
-            let queryString : string = `?skill=${skill}`;
-
-            if(typeof groupID !== 'undefined'){
-                queryString += `&group=${groupID}`;
-            }
-
-            let options = {
-                hostname: "templeosrs.com",
-                port: 443,
-                path: `/api/${endpoint.path}.php${queryString}`,
-                headers: {
-                    'Accept': 'application/json'
-                }
-            };
-
-            let req = https.get(options, res => {
+            https.get(options, res => {
                 let rawData = '';
-
+    
                 res.on('data', d => { rawData += d; });
-
+    
                 res.on('end', () => {
                     try {
                         const parsedData = JSON.parse(rawData);
@@ -75,105 +48,57 @@ export default class TempleOSRS {
                     }
                     catch (e: any){
                         console.log(`Error: ${e.message}`);
+                        reject(e.message);
                     }
                 });
             });
         });
     }
 
-    QueryGroupMembers(groupID : number, endpoint : TempleGroupEndpointEnum) : Promise<Object>{
-        return new Promise((resolve, reject) => {
-            let options = {
-                hostname: "templeosrs.com",
-                port: 443,
-                path: `/api/${endpoint.path}.php?id=${groupID}`,
-                headers: {
-                    'Accept': 'application/json'
-                }
-            };
+    async QueryCurrentTop(endpoint : TempleCompetitiveCommunityEndpointEnum, groupID? : number, skill : string = "ehp" ) : Promise<Object> {
 
-            let req = https.get(options, res => {
-                console.log(res.statusCode);
+        let queryString : string = `?skill=${skill}`;
 
-                let rawData = '';
+        if(typeof groupID !== 'undefined'){
+            queryString += `&group=${groupID}`;
+        }
 
-                res.on('data', d => { rawData += d; });
+        const options = { ...this.defaultHttpOptions, ...{ path: `/api/${endpoint}.php${queryString}` } };
 
-                res.on('end', () => {
-                    try {
-                        const parsedData = JSON.parse(rawData);
-                        console.log(parsedData);
-                        resolve(JSON.parse(rawData));
-                    }
-                    catch (e: any){
-                        console.log(`Error: ${e.message}`);
-                    }
-                });
-            });
-        })
+        return this.GetRequest(options);
+    }
+
+    async QueryGroupMembers(groupID : number, endpoint : TempleGroupEndpointEnum) : Promise<Object>{
+        const options = { ...this.defaultHttpOptions, ...{ path: `/api/${endpoint}.php?id=${groupID}` } };
+
+        return this.GetRequest(options);
     }
 
     AddDataPoint(rsn: string) {
         if(this.ValidateRSN(rsn)){
-            let options = {
-                hostname: "templeosrs.com",
-                port: 443,
-                path: `/php/add_datapoint.php?player=${encodeURI(rsn)}`
-            };
+
+            const options = { ...this.defaultHttpOptions, ...{ path: `/php/add_datapoint.php?player=${encodeURI(rsn)}` } };
+
             https.get(options, res => {
                 console.log(`Status Code ${res.statusCode} for RSN ${rsn} on AddDataPoint.`);
             });
         }
     }
 
-    QueryPlayerRSN(rsn : string, endpoint : TemplePlayerEndpointEnum) : Promise<Object>{
+    QueryPlayerRSN(rsn: string, endpoint : TemplePlayerEndpointEnum) : Promise<Object>{
 
-        return new Promise((resolve, reject) => {
-            if(this.ValidateRSN(rsn)) {
-                let options = {
-                    hostname: "templeosrs.com",
-                    port: 443,
-                    path: `/api/${endpoint.path}.php?player=${encodeURI(rsn)}`,
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                };
-    
-                let req = https.get(options, res => {
-                    console.log(res.statusCode);
-    
-                    let rawData = '';
+        if(this.ValidateRSN(rsn)){
+            const options = { ...this.defaultHttpOptions, ...{ path: `/api/${endpoint}.php?player=${encodeURI(rsn)}` } };
 
-                    res.on('data', d => { rawData += d; });
+            return this.GetRequest(options);
+        }
 
-                    res.on('end', () => {
-                        try {
-                            const parsedData = JSON.parse(rawData);
-                            console.log(parsedData);
-                            resolve(JSON.parse(rawData));
-                        }
-                        catch (e: any){
-                            console.log(`Error: ${e.message}`);
-                        }
-                    });
-                });
-            }
-            else{
-                reject("Invalid RSN Provided.");
-            }
-
-            
-        });
-
+        return Promise.resolve({});
 
     }
 
-    ValidateRSN(rsn: string) : boolean {
-
-        if(rsn.length === 0 || rsn.length > 12) return false;
-
+    private ValidateRSN(rsn: string) : boolean {
         return /^([a-zA-Z0-9 _-]{1,12})$/.test(rsn);
-
     }
 
 }

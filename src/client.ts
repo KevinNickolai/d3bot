@@ -5,9 +5,11 @@ import { promisify } from 'util';
 
 const readdirAsync  = promisify(fs.readdir);
 
-const client = new CommandClient({ intents: [Discord.Intents.FLAGS.GUILDS,
-     Discord.Intents.FLAGS.GUILD_MESSAGES,
-      Discord.Intents.FLAGS.DIRECT_MESSAGES]})
+const client = new CommandClient({ intents: [ Discord.Intents.FLAGS.GUILDS,
+                                              Discord.Intents.FLAGS.GUILD_MESSAGES,
+                                              Discord.Intents.FLAGS.DIRECT_MESSAGES ], 
+    partials: [ "CHANNEL" ] /// Required for DMs
+});
 
 /*
 * Read in commands into the CommandClient
