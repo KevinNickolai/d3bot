@@ -19,6 +19,10 @@ export enum TempleGroupEndpointEnum{
     GroupMembers = "groupmembers"
 }
 
+export function ValidateRSN(rsn: string) : boolean {
+    return /^([a-zA-Z0-9 _-]{1,12})$/.test(rsn);
+}
+
 export default class TempleOSRS {
 
     private defaultHttpOptions: https.RequestOptions;
@@ -75,7 +79,7 @@ export default class TempleOSRS {
     }
 
     AddDataPoint(rsn: string) {
-        if(this.ValidateRSN(rsn)){
+        if(ValidateRSN(rsn)){
 
             const options = { ...this.defaultHttpOptions, ...{ path: `/php/add_datapoint.php?player=${encodeURI(rsn)}` } };
 
@@ -87,7 +91,7 @@ export default class TempleOSRS {
 
     QueryPlayerRSN(rsn: string, endpoint : TemplePlayerEndpointEnum) : Promise<Object>{
 
-        if(this.ValidateRSN(rsn)){
+        if(ValidateRSN(rsn)){
             const options = { ...this.defaultHttpOptions, ...{ path: `/api/${endpoint}.php?player=${encodeURI(rsn)}` } };
 
             return this.GetRequest(options);
@@ -97,8 +101,6 @@ export default class TempleOSRS {
 
     }
 
-    private ValidateRSN(rsn: string) : boolean {
-        return /^([a-zA-Z0-9 _-]{1,12})$/.test(rsn);
-    }
+
 
 }

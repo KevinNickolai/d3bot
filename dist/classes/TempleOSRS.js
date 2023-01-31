@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TempleGroupEndpointEnum = exports.TemplePlayerEndpointEnum = exports.TempleCompetitiveCommunityEndpointEnum = void 0;
+exports.ValidateRSN = exports.TempleGroupEndpointEnum = exports.TemplePlayerEndpointEnum = exports.TempleCompetitiveCommunityEndpointEnum = void 0;
 const https_1 = __importDefault(require("https"));
 var TempleCompetitiveCommunityEndpointEnum;
 (function (TempleCompetitiveCommunityEndpointEnum) {
@@ -24,6 +24,10 @@ var TempleGroupEndpointEnum;
 (function (TempleGroupEndpointEnum) {
     TempleGroupEndpointEnum["GroupMembers"] = "groupmembers";
 })(TempleGroupEndpointEnum = exports.TempleGroupEndpointEnum || (exports.TempleGroupEndpointEnum = {}));
+function ValidateRSN(rsn) {
+    return /^([a-zA-Z0-9 _-]{1,12})$/.test(rsn);
+}
+exports.ValidateRSN = ValidateRSN;
 class TempleOSRS {
     constructor() {
         this.defaultHttpOptions = {
@@ -66,7 +70,7 @@ class TempleOSRS {
         return this.GetRequest(options);
     }
     AddDataPoint(rsn) {
-        if (this.ValidateRSN(rsn)) {
+        if (ValidateRSN(rsn)) {
             const options = { ...this.defaultHttpOptions, ...{ path: `/php/add_datapoint.php?player=${encodeURI(rsn)}` } };
             https_1.default.get(options, res => {
                 console.log(`Status Code ${res.statusCode} for RSN ${rsn} on AddDataPoint.`);
@@ -74,14 +78,11 @@ class TempleOSRS {
         }
     }
     QueryPlayerRSN(rsn, endpoint) {
-        if (this.ValidateRSN(rsn)) {
+        if (ValidateRSN(rsn)) {
             const options = { ...this.defaultHttpOptions, ...{ path: `/api/${endpoint}.php?player=${encodeURI(rsn)}` } };
             return this.GetRequest(options);
         }
         return Promise.resolve({});
-    }
-    ValidateRSN(rsn) {
-        return /^([a-zA-Z0-9 _-]{1,12})$/.test(rsn);
     }
 }
 exports.default = TempleOSRS;
