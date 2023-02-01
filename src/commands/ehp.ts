@@ -1,7 +1,5 @@
 import * as Discord from "discord.js";
-import CommandClient from "../classes/CommandClient";
 import TempleOSRS, { TemplePlayerEndpointEnum } from "../classes/TempleOSRS";
-import https from "https";
 import { IRawData } from "../classes/IRawData";
 
 module.exports = {

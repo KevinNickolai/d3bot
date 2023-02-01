@@ -16,7 +16,8 @@ export enum TemplePlayerEndpointEnum {
 }
 
 export enum TempleGroupEndpointEnum{
-    GroupMembers = "groupmembers"
+    GroupMembers = "groupmembers",
+    GroupInfo = "group_info"
 }
 
 export function ValidateRSN(rsn: string) : boolean {
@@ -72,7 +73,7 @@ export default class TempleOSRS {
         return this.GetRequest(options);
     }
 
-    async QueryGroupMembers(groupID : number, endpoint : TempleGroupEndpointEnum) : Promise<Object>{
+    async QueryGroupEndpoint(groupID : number, endpoint : TempleGroupEndpointEnum) : Promise<Object>{
         const options = { ...this.defaultHttpOptions, ...{ path: `/api/${endpoint}.php?id=${groupID}` } };
 
         return this.GetRequest(options);

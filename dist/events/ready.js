@@ -33,7 +33,7 @@ module.exports = (client) => {
     let tOsrs = new TempleOSRS_1.default();
     console.log(`Starting datapoint refresh service for District 3...`);
     setInterval(() => {
-        tOsrs.QueryGroupMembers(config_1.DISTRICT3_TEMPLE_GROUPID, TempleOSRS_1.TempleGroupEndpointEnum.GroupMembers)
+        tOsrs.QueryGroupEndpoint(config_1.DISTRICT3_TEMPLE_GROUPID, TempleOSRS_1.TempleGroupEndpointEnum.GroupMembers)
             .then((groupMembers) => {
             let rsns = Object.values(groupMembers);
             // timeout interval in seconds to execute requests to Temple's API

@@ -1,9 +1,7 @@
 import * as Discord from "discord.js";
-import CommandClient from "../classes/CommandClient";
-import TempleOSRS, { TempleCompetitiveCommunityEndpointEnum, TemplePlayerEndpointEnum } from "../classes/TempleOSRS";
-import https from 'https';
-import { IBaseTopTimeframe, IRecordTopTimeframe } from "../classes/IRawData";
-import { DISTRICT3_TEMPLE_GROUPID, prefix } from "../config";
+import TempleOSRS, { TempleCompetitiveCommunityEndpointEnum } from "../classes/TempleOSRS";
+import { IRecordTopTimeframe } from "../classes/IRawData";
+import { DISTRICT3_TEMPLE_GROUPID } from "../config";
 
 
 module.exports = {

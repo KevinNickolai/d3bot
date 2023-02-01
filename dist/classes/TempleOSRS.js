@@ -23,6 +23,7 @@ var TemplePlayerEndpointEnum;
 var TempleGroupEndpointEnum;
 (function (TempleGroupEndpointEnum) {
     TempleGroupEndpointEnum["GroupMembers"] = "groupmembers";
+    TempleGroupEndpointEnum["GroupInfo"] = "group_info";
 })(TempleGroupEndpointEnum = exports.TempleGroupEndpointEnum || (exports.TempleGroupEndpointEnum = {}));
 function ValidateRSN(rsn) {
     return /^([a-zA-Z0-9 _-]{1,12})$/.test(rsn);
@@ -65,7 +66,7 @@ class TempleOSRS {
         const options = { ...this.defaultHttpOptions, ...{ path: `/api/${endpoint}.php${queryString}` } };
         return this.GetRequest(options);
     }
-    async QueryGroupMembers(groupID, endpoint) {
+    async QueryGroupEndpoint(groupID, endpoint) {
         const options = { ...this.defaultHttpOptions, ...{ path: `/api/${endpoint}.php?id=${groupID}` } };
         return this.GetRequest(options);
     }

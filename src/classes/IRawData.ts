@@ -12,6 +12,37 @@ export interface IRecordTopTimeframe{
     Year: TopTimeframeRecordList;
 }
 
+export interface IRawGroupData {
+    data: IGroupSummary;
+}
+
+interface IGroupSummary {
+    info: IGroupInfo;
+    members: string[];
+    leaders: string[];
+}
+
+interface IGroupInfo {
+    id: number;
+    name: string;
+    youtube_link?: string;
+    twitter_link?: string;
+    twitch_link?: string;
+    discord_link?: string;
+    forum_link?: string;
+
+    total_xp: number;
+    average_xp: number;
+    total_ehp: number;
+    average_ehp: number;
+    total_ehb: number;
+    average_ehb: number;
+
+    clan_type: string;
+    clan_type_id: number;
+    member_count: number;
+}
+
 interface TopTimeframeList{
     [i: string]: ITopTimeframePlayer;
 }

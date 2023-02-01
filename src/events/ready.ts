@@ -15,7 +15,7 @@ module.exports = (client: CommandClient) => {
     console.log(`Starting datapoint refresh service for District 3...`);
 
     setInterval(() => {
-        tOsrs.QueryGroupMembers(DISTRICT3_TEMPLE_GROUPID, TempleGroupEndpointEnum.GroupMembers)
+        tOsrs.QueryGroupEndpoint(DISTRICT3_TEMPLE_GROUPID, TempleGroupEndpointEnum.GroupMembers)
             .then((groupMembers) => {
 
                 let rsns : string[] = Object.values(groupMembers);
