@@ -79,15 +79,26 @@ export default class TempleOSRS {
         return this.GetRequest(options);
     }
 
-    AddDataPoint(rsn: string) {
+    AddDataPoint(rsn: string) : Promise<boolean> {
         if(ValidateRSN(rsn)){
+            return new Promise((resolve, reject) =>{
 
-            const options = { ...this.defaultHttpOptions, ...{ path: `/php/add_datapoint.php?player=${encodeURI(rsn)}` } };
+                const options = { ...this.defaultHttpOptions, ...{ path: `/php/add_datapoint.php?player=${encodeURI(rsn)}` } };
 
-            https.get(options, res => {
-                console.log(`Status Code ${res.statusCode} for RSN ${rsn} on AddDataPoint.`);
+                https.get(options, res => {
+                    console.log(`Status Code ${res.statusCode} for RSN ${rsn} on AddDataPoint.`);
+
+                    resolve(res.statusCode! >= 200 && res.statusCode!<400);
+                });
+
+            });
+        } else {
+            return new Promise((resolve, reject) => {
+                resolve(false);
             });
         }
+
+
     }
 
     QueryPlayerRSN(rsn: string, endpoint : TemplePlayerEndpointEnum) : Promise<Object>{

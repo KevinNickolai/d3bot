@@ -72,9 +72,17 @@ class TempleOSRS {
     }
     AddDataPoint(rsn) {
         if (ValidateRSN(rsn)) {
-            const options = { ...this.defaultHttpOptions, ...{ path: `/php/add_datapoint.php?player=${encodeURI(rsn)}` } };
-            https_1.default.get(options, res => {
-                console.log(`Status Code ${res.statusCode} for RSN ${rsn} on AddDataPoint.`);
+            return new Promise((resolve, reject) => {
+                const options = { ...this.defaultHttpOptions, ...{ path: `/php/add_datapoint.php?player=${encodeURI(rsn)}` } };
+                https_1.default.get(options, res => {
+                    console.log(`Status Code ${res.statusCode} for RSN ${rsn} on AddDataPoint.`);
+                    resolve(res.statusCode >= 200 && res.statusCode < 400);
+                });
+            });
+        }
+        else {
+            return new Promise((resolve, reject) => {
+                resolve(false);
             });
         }
     }
