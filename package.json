@@ -11,7 +11,9 @@
     "testStart": "node ./dist/tests/tindex.js",
     "build": "tsc --build",
     "clean": "tsc --build --clean",
-    "dev": "nodemon ./dist/index.js"
+    "dev": "nodemon ./dist/index.js",
+    "regService": "node ./dist/registerService.js",
+    "unregService": "node ./dist/unregisterService.js"
   },
   "author": "Kevin Nickolai",
   "license": "ISC",
